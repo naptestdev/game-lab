@@ -2,6 +2,7 @@ import { client } from "../../(service)/client";
 import { GET_POST_BY_SLUG } from "../../(service)/queries/post";
 import { parse } from "node-html-parser";
 import { imageProxy } from "../../(service)/image";
+import { GET_HOME_DATA } from "../../(service)/queries/home";
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const data = await getData(params.slug);
@@ -40,3 +41,11 @@ const getData = async (slug: string) => {
 
   return data;
 };
+
+export async function generateStaticParams() {
+  const data = await client.request(GET_HOME_DATA);
+
+  return data.posts.map((post: any) => ({
+    slug: post.slug,
+  }));
+}
