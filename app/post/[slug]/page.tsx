@@ -31,6 +31,7 @@ const getData = async (slug: string) => {
   dom.querySelectorAll("p").forEach((p) => {
     const anchor = p.querySelector("a");
     if (anchor?.getAttribute("href")?.includes("googleusercontent.com")) {
+      p.setAttribute("style", "display: flex; justify-content: center");
       p.innerHTML = `<img style"margin: 0 auto;" src="${imageProxy(
         anchor.getAttribute("href")!
       )}" />`;
