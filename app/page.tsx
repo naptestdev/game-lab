@@ -8,13 +8,11 @@ export default async function Page() {
   return (
     <div className="min-h-screen">
       {data.posts.map((post: any) => (
-        <Link
-          className="text-blue-500"
-          href={`/post/${post.slug}`}
-          key={post.slug}
-        >
-          {post.title}
-        </Link>
+        <div key={post.slug}>
+          <Link className="text-blue-500" href={`/post/${post.slug}`}>
+            {post.title}
+          </Link>
+        </div>
       ))}
     </div>
   );
