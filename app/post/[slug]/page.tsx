@@ -57,3 +57,5 @@ export async function generateStaticParams() {
     slug: post.slug,
   }));
 }
+
+export const revalidate = 300;

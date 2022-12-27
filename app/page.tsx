@@ -25,3 +25,5 @@ const getData = async () => {
 
   return data;
 };
+
+export const revalidate = 300;
