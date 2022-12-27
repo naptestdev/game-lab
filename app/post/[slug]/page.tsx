@@ -1,22 +1,18 @@
 import { client } from "../../(service)/client";
 import { GET_POST_BY_SLUG } from "../../(service)/queries/post";
 import { parse } from "node-html-parser";
-import { imageProxy } from "../../(service)/image";
+import { imageProxy } from "../../(utils)/image";
 import { GET_HOME_DATA } from "../../(service)/queries/home";
+import { toKebabCase } from "../../(utils)/string";
+import Content from "./Content";
 
 export default async function Post({ params }: { params: { slug: string } }) {
-  const data = await getData(params.slug);
+  const { data, headings } = await getData(params.slug);
 
-  return (
-    <div className="flex justify-center">
-      <article
-        className="w-full max-w-3xl prose my-8 mx-3"
-        dangerouslySetInnerHTML={{ __html: data.post.content.html }}
-      ></article>
-    </div>
-  );
+  return <Content data={data} headings={headings} />;
 }
 
+export type data = Awaited<ReturnType<typeof getData>>;
 const getData = async (slug: string) => {
   const data = await client.request(GET_POST_BY_SLUG, { slug });
 
@@ -38,9 +34,20 @@ const getData = async (slug: string) => {
     }
   });
 
+  const headings = dom.querySelectorAll("h1,h2,h3,h4,h5,h6").map((el) => {
+    const id = toKebabCase(el.innerText);
+
+    el.setAttribute("id", id);
+
+    return {
+      id,
+      content: el.innerText,
+    };
+  });
+
   data.post.content.html = dom.outerHTML;
 
-  return data;
+  return { data, headings };
 };
 
 export async function generateStaticParams() {

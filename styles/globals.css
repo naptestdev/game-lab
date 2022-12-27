@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-padding-top: 88px;
+}
+
 br {
   display: none;
+}
+
+.active {
+  @apply !text-red-600 relative before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-6 before:w-1 before:bg-red-600;
 }
